@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fast Food Bot</title>
+</head>
+<body>
+    <h1>Ask the Fast Food Bot</h1>
+    <form id="question-form">
+        <input type="text" id="question" name="question" placeholder="Enter your question">
+        <button type="submit">Ask</button>
+    </form>
+    <div id="answer"></div>
+
+    <script>
+        document.getElementById('question-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var question = document.getElementById('question').value;
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question: question }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('answer').innerText = 'Answer: ' + data.answer;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('answer').innerText = 'Error: ' + error.message;
+            });
+        });
+    </script>
+</body>
+</html>
